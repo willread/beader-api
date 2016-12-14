@@ -10,14 +10,19 @@ var router = express.Router();
 
 // Get the current user
 
-router.get('/', function(req, res) {
+router.get('/foo', function(req, res) {
   let user = authUtils.getJWTUserFromRequest(req);
 
   if(!user){
     return res.status(403);
   }
 
-  res.end("fuck");
+  db.collection('users').findOne({google: user.google}, function(err, user) {
+    if(err || !user){
+      return res.status(404).send({message: 'User not found'});
+    }
+    res.send(user);
+  });
 });
 
 // Authenticate a google userId
