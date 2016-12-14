@@ -1,6 +1,7 @@
 'use strict';
 var moment = require('moment');
 var jwt = require('jwt-simple');
+
 exports.createJWT = function(user){
     var payload = {
         sub: user._id,
@@ -13,7 +14,6 @@ exports.createJWT = function(user){
 exports.handleError = function (res, err) {
     return res.send(400, err);
 }
-
 
 exports.ensureAuthenticated = function(req, res, next) {
   if (!req.headers.authorization) {
