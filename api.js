@@ -103,6 +103,7 @@ app.post('/auth', function(req, res) {
           console.log("token sent");
           return res.send({ token: authUtils.createJWT(existingUser) });
         }
+        console.log("profile: ", JSON.stringify(profile));
         var user = {
           google: profile.sub,
           picture: profile.pictures.replace('sz=50', 'sz=200'),
