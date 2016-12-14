@@ -11,6 +11,21 @@ exports.createJWT = function(user){
     return jwt.encode(payload, process.env.TOKEN_SECRET);
 }
 
+exports.getJWTUser = function(token) {
+  var payload = null;
+  try {
+    payload = jwt.decode(req.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET);
+  } catch (err) {}
+  return payload ? payload.user : null;
+}
+
+exports.getJWTUserFromRequest(req) {
+  if(!req.headers.authorization){
+    return null;
+  }
+  return exports.getJWTUser(req.headers.authorization.replace('Bearer ', ''));
+}
+
 exports.handleError = function (res, err) {
     return res.send(400, err);
 }
@@ -32,6 +47,6 @@ exports.ensureAuthenticated = function(req, res, next) {
   if (payload.exp <= moment().unix()) {
     return res.status(401).send({ message: 'Token has expired' });
   }
-  req.user = payload.sub;
+  req.user = payload.user;
   next();
 }
