@@ -2,7 +2,6 @@ var express = require('express');
 var authUtils = require('./authUtils');
 var request = require('request');
 var jwt = require('jwt-simple');
-var db = require('./db').db;
 
 // Configure router
 
@@ -10,11 +9,12 @@ var router = express.Router();
 
 // Get the current user
 
-router.get('/foo', function(req, res) {
+router.get('/', function(req, res) {
   let user = authUtils.getJWTUserFromRequest(req);
 
   if(!user){
-    return res.status(403);
+    res.status(403).send({message: 'You are not logged in'};
+    return;
   }
 
   db.collection('users').findOne({google: user.google}, function(err, user) {
