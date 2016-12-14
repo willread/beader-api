@@ -3,7 +3,7 @@ var ObjectID = mongodb.ObjectID;
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 
-exports.db = null;
+var db = null;
 
 exports.connect = function(cb) {
   mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
@@ -14,11 +14,15 @@ exports.connect = function(cb) {
 
     // Save database object from the callback for reuse.
 
-    exports.db = database;
+    db = database;
     console.log('Database connection ready');
 
     if(cb){
       cb();
     }
   });
+};
+
+exports.getDb = function() {
+  return db;
 };

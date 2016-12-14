@@ -1,7 +1,7 @@
 var express = require('express');
 var cloudinary = require('cloudinary');
 var authUtils = require('./authUtils');
-var db = require('./db').db;
+var db = require('./db').getDb();
 
 // Configure router
 
