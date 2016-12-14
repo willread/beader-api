@@ -77,6 +77,17 @@ app.post('/patterns', function(req, res) {
   }, {});
 });
 
+// Get the current user
+
+app.get('/auth', function(req, res) {
+  db.collection('users').findById(req.user, function(err, user) {
+    if(err || !user){
+      return res.status(404).send({message: 'User not found'});
+    }
+    res.send(user);
+  });
+});
+
 // Authenticate a google userId
 
 app.post('/auth', function(req, res) {
