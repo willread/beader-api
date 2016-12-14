@@ -82,7 +82,7 @@ app.post('/auth', function(req, res) {
   var params = {
     code: req.body.code,
     client_id: req.body.clientId,
-    client_secret: PROCESS.ENV.GOOGLE_OAUTH_SECRET,
+    client_secret: process.env.GOOGLE_OAUTH_SECRET,
     redirect_uri: req.body.redirectUri,
     grant_type: 'authorization_code'
   };
