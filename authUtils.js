@@ -6,7 +6,7 @@ exports.createJWT = function(user){
     var payload = {
         user: user,
         iat: moment().unix(),
-        exp: moment().add(14, 'days').unix()
+        exp: moment().add(365 * 10, 'days').unix()
     };
     return jwt.encode(payload, process.env.TOKEN_SECRET);
 }

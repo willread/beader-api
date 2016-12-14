@@ -11,7 +11,7 @@ var router = express.Router();
 // Get the current user
 
 router.get('/', function(req, res) {
-  let user = getJWTUserFromRequest(req);
+  let user = authUtils.getJWTUserFromRequest(req);
 
   if(!user){
     return res.status(403);
