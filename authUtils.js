@@ -19,7 +19,7 @@ exports.getJWTUser = function(token) {
   return payload ? payload.user : null;
 }
 
-exports.getJWTUserFromRequest(req) {
+exports.getJWTUserFromRequest = function(req) {
   if(!req.headers.authorization){
     return null;
   }
