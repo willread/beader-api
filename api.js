@@ -88,6 +88,7 @@ app.get('/auth', function(req, res) {
   } catch (err) {
     return res.status(401).send({ message: err.message });
   }
+  console.log('payload:', JSON.stringify(payload));
 
   db.collection('users').findOne({google: payload.google}, function(err, user) {
     if(err || !user){
