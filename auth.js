@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
     return res.status(403);
   }
 
-  res.send("fuck");
+  res.end("fuck");
 });
 
 // Authenticate a google userId
