@@ -81,7 +81,15 @@ app.post('/patterns', function(req, res) {
 // Get the current user
 
 app.get('/auth', function(req, res) {
-  db.collection('users').findById(req.user, function(err, user) {
+  var payload = null;
+  try {
+    payload = jwt.decode(req.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET);
+  }
+  catch (err) {
+    return res.status(401).send({ message: err.message });
+  }
+
+  db.collection('users').findOne({google: payload.google}, function(err, user) {
     if(err || !user){
       return res.status(404).send({message: 'User not found'});
     }
