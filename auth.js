@@ -2,7 +2,7 @@ var express = require('express');
 var authUtils = require('./authUtils');
 var request = require('request');
 var jwt = require('jwt-simple');
-var db = require('./db').getDb();
+var db = require('./db').getDb;
 
 // Configure router
 
@@ -14,10 +14,10 @@ router.get('/', function(req, res) {
   let user = authUtils.getJWTUserFromRequest(req);
 
   if(!user){
-    returnres.status(403).send({message: 'You are not logged in'});
+    return res.status(403).send({message: 'You are not logged in'});
   }
 
-  db.collection('users').findOne({google: user.google}, function(err, user) {
+  db().collection('users').findOne({google: user.google}, function(err, user) {
     if(err || !user){
       return res.status(404).send({message: 'User not found'});
     }
@@ -46,7 +46,7 @@ router.post('/', function(req, res) {
     request.get({ url: peopleApiUrl, headers: headers, json: true }, function(err, response, profile) {
 
       // Step 3b. Create a new user account or return an existing one.
-      db.collection('users').findOne({ google: profile.sub }, function(err, existingUser) {
+      db().collection('users').findOne({ google: profile.sub }, function(err, existingUser) {
         if (existingUser) {
           console.log("token sent");
           return res.send({ token: authUtils.createJWT(existingUser) });
@@ -56,7 +56,7 @@ router.post('/', function(req, res) {
           google: profile.sub,
           displayName: profile.name
         };
-        db.collection('users').insertOne(user, function(err, user) {
+        db().collection('users').insertOne(user, function(err, user) {
           var token = authUtils.createJWT(user);
           console.log("token sent");
           res.send({ token: token });

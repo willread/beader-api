@@ -1,7 +1,7 @@
 var express = require('express');
 var cloudinary = require('cloudinary');
 var authUtils = require('./authUtils');
-var db = require('./db').getDb();
+var db = require('./db').getDb;
 
 // Configure router
 
@@ -35,7 +35,7 @@ router.post('/', function(req, res) {
   cloudinary.uploader.upload(pattern.image, function(result) {
     pattern.imageUrl = result.secure_url;
 
-    db.collection('patterns').insertOne(pattern, function(err, doc) {
+    db().collection('patterns').insertOne(pattern, function(err, doc) {
       if(err){
         req.status(500).json({error: err.message});
       }else{
