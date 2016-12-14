@@ -2,7 +2,7 @@ var express = require('express');
 var authUtils = require('./authUtils');
 var request = require('request');
 var jwt = require('jwt-simple');
-var db = require('./db');
+var db = require('./db').getDb();
 
 // Configure router
 

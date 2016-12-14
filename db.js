@@ -21,9 +21,13 @@ var getDb = function(cb) {
       if(cb){
         cb(db);
       }
+      return db;
     });
   }else{
-    cb(db);
+    if(cb){
+      cb(db);
+    }
+    return db;
   }
 }
 
