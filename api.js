@@ -16,11 +16,10 @@ var app = express();
 app.use(bodyParser.json());
 
 app.all('*', function(req, res, next) {
-     var origin = req.get('origin');
-     res.header('Access-Control-Allow-Origin', origin);
-     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-     res.header('Access-Control-Allow-Headers', 'Content-Type');
-     next();
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+   res.header('Access-Control-Allow-Headers', 'Content-Type');
+   next();
 });
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
