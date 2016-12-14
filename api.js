@@ -1,8 +1,15 @@
+var cloudinary = require("cloudinary");
 var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 var app = express();
 // app.use(express.static(__dirname + "/public"));
@@ -27,4 +34,34 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
     var port = server.address().port;
     console.log("App now running on port", port);
   });
+});
+
+// Create a new pattern
+
+// {
+//   name: '',
+//   description: '',
+//   userId: 1,
+//   width: 10,
+//   height: 10,
+//   pattern: ['#ffffff', ...],
+//   image: 'data:image/png;base64,...'
+// }
+
+app.post("/patterns", function(req, res) {
+  var pattern = req.body;
+
+  // TODO: Validation
+
+  cloudinary.uploader.upload(pattern.image, function(result) {
+    pattern.imageUrl = result.secure_url;
+
+    db.collection("patterns").insertOne(pattern, function(err, doc) {
+      if(err){
+        req.status(500).json({error: err.message});
+      }else{
+        res.json(doc);
+      }
+    })
+  }, {});
 });
