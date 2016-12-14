@@ -83,9 +83,8 @@ app.post('/patterns', function(req, res) {
 app.get('/auth', function(req, res) {
   var payload = null;
   try {
-    payload = jwt.decode(req.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET);
-  }
-  catch (err) {
+    payload = jwt.decode(req.headers.authorization, process.env.TOKEN_SECRET);
+  } catch (err) {
     return res.status(401).send({ message: err.message });
   }
 
