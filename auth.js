@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
   let user = authUtils.getJWTUserFromRequest(req);
 
   if(!user){
-    res.status(403).send({message: 'You are not logged in'};
+    res.status(403).send({message: 'You are not logged in'});
     return;
   }
 
