@@ -13,7 +13,7 @@ cloudinary.config({
 
 var app = express();
 // app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 
 app.all('*', function(req, res, next) {
    res.header('Access-Control-Allow-Origin', '*');
