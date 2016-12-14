@@ -17,12 +17,7 @@ router.get('/', function(req, res) {
     return res.status(403);
   }
 
-  db.collection('users').findOne({google: user.google}, function(err, user) {
-    if(err || !user){
-      return res.status(404).send({message: 'User not found'});
-    }
-    res.send(user);
-  });
+  res.send("fuck");
 });
 
 // Authenticate a google userId
