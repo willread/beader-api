@@ -1,8 +1,8 @@
-var cloudinary = require("cloudinary");
-var express = require("express");
-var path = require("path");
-var bodyParser = require("body-parser");
-var mongodb = require("mongodb");
+var cloudinary = require('cloudinary');
+var express = require('express');
+var path = require('path');
+var bodyParser = require('body-parser');
+var mongodb = require('mongodb');
 var ObjectID = mongodb.ObjectID;
 
 cloudinary.config({
@@ -12,8 +12,16 @@ cloudinary.config({
 });
 
 var app = express();
-// app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
+
+app.all('*', function(req, res, next) {
+     var origin = req.get('origin');
+     res.header('Access-Control-Allow-Origin', origin);
+     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+     res.header('Access-Control-Allow-Headers', 'Content-Type');
+     next();
+});
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 var db;
@@ -27,12 +35,12 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
 
   // Save database object from the callback for reuse.
   db = database;
-  console.log("Database connection ready");
+  console.log('Database connection ready');
 
   // Initialize the app.
   var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
-    console.log("App now running on port", port);
+    console.log('App now running on port', port);
   });
 });
 
@@ -48,7 +56,7 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
 //   image: 'data:image/png;base64,...'
 // }
 
-app.post("/patterns", function(req, res) {
+app.post('/patterns', function(req, res) {
   var pattern = req.body;
 
   // TODO: Validation
@@ -56,7 +64,7 @@ app.post("/patterns", function(req, res) {
   cloudinary.uploader.upload(pattern.image, function(result) {
     pattern.imageUrl = result.secure_url;
 
-    db.collection("patterns").insertOne(pattern, function(err, doc) {
+    db.collection('patterns').insertOne(pattern, function(err, doc) {
       if(err){
         req.status(500).json({error: err.message});
       }else{
