@@ -30,4 +30,4 @@ db(function() {
 // Import modules
 
 app.use('/auth', require('./auth'));
-app.user('/patterns', require('./patterns'));
+app.use('/patterns', require('./patterns'));
