@@ -84,7 +84,7 @@ app.get('/auth', function(req, res) {
   var payload = null;
   try {
     console.log('header:', req.headers.authorization);
-    payload = jwt.decode(req.headers.authorization, process.env.TOKEN_SECRET);
+    payload = jwt.decode(req.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET);
   } catch (err) {
     return res.status(401).send({ message: err.message });
   }
