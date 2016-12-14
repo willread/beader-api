@@ -20,6 +20,9 @@
     "body-parser": "^1.15.2",
     "cloudinary": "^1.4.6",
     "express": "^4.14.0",
-    "mongodb": "^2.2.16"
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.17.1",
+    "mongodb": "^2.2.16",
+    "request": "^2.79.0"
   }
 }

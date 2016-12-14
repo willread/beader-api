@@ -4,6 +4,9 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 var ObjectID = mongodb.ObjectID;
+var request = require('request');
+var jwt = require('jwt-simple');
+var authUtils = require('./authUtils');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
