@@ -12,7 +12,7 @@ var router = express.Router();
 
 router.get('/', function(req, res) {
   let user = authUtils.getJWTUserFromRequest(req);
-
+  console.log("GET!!!");
   if(!user){
     return res.status(403);
   }
