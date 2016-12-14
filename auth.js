@@ -7,7 +7,6 @@ var db = require('./db');
 // Configure router
 
 var router = express.Router();
-router.use(authUtils.ensureAuthenticated);
 
 // Get the current user
 
