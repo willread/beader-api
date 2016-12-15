@@ -57,4 +57,18 @@ router.get('/', function(req, res) {
   });
 });
 
+// Get a single pattern
+
+// GET /pattern/:id
+
+router.get('/:id', function(req, res) {
+  db().collection('patterns').findOne({_id: req.params.id}, function(err, pattern) {
+    if(err){
+      return res.status(404).json({message: 'Pattern not found.'});
+    }
+
+    res.json(pattern);
+  });
+});
+
 module.exports = router;
