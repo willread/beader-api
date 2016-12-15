@@ -1,7 +1,9 @@
 var express = require('express');
+var paginate = require('express-paginate');
 var cloudinary = require('cloudinary');
-var authUtils = require('./authUtils');
 var mongoose = require('mongoose');
+
+var authUtils = require('./authUtils');
 
 var Pattern = mongoose.model('Pattern', mongoose.Schema({
   name: String,
@@ -29,9 +31,15 @@ cloudinary.config({
 
 // GET /patterns
 
+router.use(paginate.middleware(10, 50));
+
 router.get('/', function(req, res) {
-  Pattern.find().sort({_id: -1}).limit(5).skip(0).exec(function(err, patterns) {
-    res.json(patterns);
+  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit}, function(err, patterns, pageCount, itemCount) {
+    res.json({
+      patterns: patterns,
+      pageCount: pageCount,
+      itemCount: itemCount
+    });
   });
 });
 
