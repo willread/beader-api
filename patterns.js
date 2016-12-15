@@ -2,10 +2,11 @@ var express = require('express');
 var paginate = require('express-paginate');
 var cloudinary = require('cloudinary');
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 var authUtils = require('./authUtils');
 
-var Pattern = mongoose.model('Pattern', mongoose.Schema({
+var PatternSchema = mongoose.Schema({
   name: String,
   description: String,
   width: Number,
@@ -13,7 +14,9 @@ var Pattern = mongoose.model('Pattern', mongoose.Schema({
   imageUrl: String,
   pattern: Array,
   user: mongoose.Schema.Types.Mixed
-}));
+};
+PatternSchema.plugin(mongoosePaginate);
+var Pattern = mongoose.model('Pattern', PatternSchema));
 
 // Configure router
 
