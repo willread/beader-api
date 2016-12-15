@@ -1,6 +1,7 @@
 var express = require('express');
 var cloudinary = require('cloudinary');
 var authUtils = require('./authUtils');
+var mongo = require('mongodb');
 var db = require('./db').getDb;
 
 // Configure router
@@ -62,7 +63,7 @@ router.get('/', function(req, res) {
 // GET /pattern/:id
 
 router.get('/:id', function(req, res) {
-  db().collection('patterns').findOne({_id: req.params.id}, function(err, pattern) {
+  db().collection('patterns').findOne({_id: new mongo.ObjectId(req.params.id)}, function(err, pattern) {
     if(err){
       return res.status(404).json({message: 'Pattern not found.'});
     }
