@@ -21,7 +21,7 @@ cloudinary.config({
 // GET /patterns
 
 router.get('/', function(req, res) {
-  db().collection('patterns').find().sort({_id, -1).limit(5).skip(0).toArray(function(err, patterns) {
+  db().collection('patterns').find().sort({_id, -1}).limit(5).skip(0).toArray(function(err, patterns) {
       res.json(patterns);
   });
 });
