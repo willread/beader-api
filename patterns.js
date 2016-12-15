@@ -53,6 +53,8 @@ router.post('/', function(req, res) {
 
 router.get('/', function(req, res) {
   db().collection('patterns').find({}, function(err, patterns) {
+      console.log('Error', err);
+      console.log('Patterns', patterns);
       res.json(patterns);
   });
 });
