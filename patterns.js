@@ -29,6 +29,7 @@ cloudinary.config({
 
 router.post('/', function(req, res) {
   var pattern = req.body;
+  pattern.user = req.user;
 
   // TODO: Validation
 

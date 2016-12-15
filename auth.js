@@ -8,23 +8,6 @@ var db = require('./db').getDb;
 
 var router = express.Router();
 
-// Get the current user
-
-router.get('/', function(req, res) {
-  let user = authUtils.getJWTUserFromRequest(req);
-
-  if(!user){
-    return res.status(403).send({message: 'You are not logged in'});
-  }
-
-  db().collection('users').findOne({google: user.google}, function(err, user) {
-    if(err || !user){
-      return res.status(404).send({message: 'User not found'});
-    }
-    res.send(user);
-  });
-});
-
 // Authenticate a google userId
 
 router.post('/', function(req, res) {
@@ -63,6 +46,27 @@ router.post('/', function(req, res) {
         });
       });
     });
+  });
+});
+
+// Routes after are authenticated
+
+router.use(authUtils.ensureAuthenticated);
+
+// Get the current user
+
+router.get('/', function(req, res) {
+  let user = authUtils.getJWTUserFromRequest(req);
+
+  if(!user){
+    return res.status(403).send({message: 'You are not logged in'});
+  }
+
+  db().collection('users').findOne({google: user.google}, function(err, user) {
+    if(err || !user){
+      return res.status(404).send({message: 'User not found'});
+    }
+    res.send(user);
   });
 });
 
