@@ -1,6 +1,7 @@
 var express = require('express');
 var paginate = require('express-paginate');
 var cloudinary = require('cloudinary');
+var mongo = require('mongo');
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
