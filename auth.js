@@ -49,10 +49,6 @@ router.post('/', function(req, res) {
   });
 });
 
-// Routes after are authenticated
-
-router.use(authUtils.ensureAuthenticated);
-
 // Get the current user
 
 router.get('/', function(req, res) {
