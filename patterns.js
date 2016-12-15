@@ -1,7 +1,6 @@
 var express = require('express');
 var paginate = require('express-paginate');
 var cloudinary = require('cloudinary');
-var mongo = require('mongo');
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
@@ -52,7 +51,7 @@ router.get('/', function(req, res) {
 // GET /pattern/:id
 
 router.get('/:id', function(req, res) {
-  Pattern.findOne({_id: new mongo.ObjectId(req.params.id)}, function(err, pattern) {
+  Pattern.findOne({_id: ObjectId(req.params.id)}, function(err, pattern) {
     if(err){
       return res.status(404).json({message: 'Pattern not found.'});
     }
