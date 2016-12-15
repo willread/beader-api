@@ -18,7 +18,7 @@ cloudinary.config({
 
 // Create a new pattern
 
-// {
+// POST /patterns {
 //   name: '',
 //   description: '',
 //   width: 10,
@@ -45,6 +45,16 @@ router.post('/', function(req, res) {
       }
     })
   }, {});
+});
+
+// Get a list of patterns
+
+// GET /patterns
+
+router.get('/', function(req, res) {
+  db().collection('patterns').find().limit(5).skip(0, function(err, patterns) {
+      res.send(patterns);
+  });
 });
 
 module.exports = router;
