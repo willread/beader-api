@@ -16,7 +16,7 @@ var PatternSchema = mongoose.Schema({
   user: mongoose.Schema.Types.Mixed
 });
 PatternSchema.plugin(mongoosePaginate);
-var Pattern = mongoose.model('Pattern', PatternSchema));
+var Pattern = mongoose.model('Pattern', PatternSchema);
 
 // Configure router
 
