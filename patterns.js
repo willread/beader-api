@@ -14,7 +14,7 @@ var PatternSchema = mongoose.Schema({
   imageUrl: String,
   pattern: Array,
   user: mongoose.Schema.Types.Mixed
-};
+});
 PatternSchema.plugin(mongoosePaginate);
 var Pattern = mongoose.model('Pattern', PatternSchema));
 
