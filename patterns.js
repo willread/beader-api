@@ -66,7 +66,7 @@ router.get('/:id', function(req, res) {
     if(err){
       return res.status(404).json({message: 'Pattern not found.'});
     }
-
+    console.log('pattern:', pattern);
     res.json(pattern);
   });
 });
