@@ -35,6 +35,7 @@ router.post('/', function(req, res) {
 
   cloudinary.uploader.upload(pattern.image, function(result) {
     pattern.imageUrl = result.secure_url;
+    pattern.image = null;
 
     db().collection('patterns').insertOne(pattern, function(err, doc) {
       if(err){
