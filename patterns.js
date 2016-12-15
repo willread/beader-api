@@ -37,11 +37,11 @@ cloudinary.config({
 router.use(paginate.middleware(10, 50));
 
 router.get('/', function(req, res) {
-  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit}, function(err, patterns, pageCount, itemCount) {
+  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit}, function(err, result) {
     res.json({
-      patterns: patterns,
-      pageCount: pageCount,
-      itemCount: itemCount
+      patterns: result.docs,
+      totalPages: result.pages,
+      totalPatterns: result.total
     });
   });
 });
