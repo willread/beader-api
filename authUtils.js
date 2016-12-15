@@ -14,7 +14,7 @@ exports.createJWT = function(user){
 exports.getJWTUser = function(token) {
   var payload = null;
   try {
-    payload = jwt.decode(req.headers.authorization.replace('Bearer ', ''), process.env.TOKEN_SECRET);
+    payload = jwt.decode(token, process.env.TOKEN_SECRET);
   } catch (err) {}
   return payload ? payload.user : null;
 }
