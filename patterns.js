@@ -3,7 +3,7 @@ var cloudinary = require('cloudinary');
 var authUtils = require('./authUtils');
 var mongoose = require('mongoose');
 
-var Pattern = mongoose.model('Pattern', mongoose.Schema({
+var patternScema = mongoose.Schema({
   name: String,
   description: String,
   width: Number,
@@ -11,7 +11,8 @@ var Pattern = mongoose.model('Pattern', mongoose.Schema({
   imageUrl: String,
   pattern: Array,
   user: mongoose.Schema.Types.Mixed
-}));
+});
+var Pattern = mongoose.model('Pattern', patternScema);
 
 // Configure router
 
