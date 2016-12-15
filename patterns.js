@@ -52,7 +52,7 @@ router.post('/', function(req, res) {
 // GET /patterns
 
 router.get('/', function(req, res) {
-  db().collection('patterns').find().limit(5).skip(0, function(err, patterns) {
+  db().collection('patterns').find({}, function(err, patterns) {
       res.json(patterns);
   });
 });
