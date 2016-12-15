@@ -1,7 +1,8 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-var db = require('./db');
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI);
 
 var app = express();
 
@@ -20,7 +21,12 @@ app.all('*', function(req, res, next) {
 
 // Initialize the app.
 
-db.connect(function() {
+var db = mongoose.connection;
+db.on('error', function() {
+  process.exit(1);
+});
+
+db.once('open', function() {
   var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log('App now running on port', port);
