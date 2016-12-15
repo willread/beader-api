@@ -30,7 +30,7 @@ cloudinary.config({
 // GET /patterns
 
 router.get('/', function(req, res) {
-  Pattern.find().sort({_id: -1}).limit(5).skip(0).toArray(function(err, patterns) {
+  Pattern.find().sort({_id: -1}).limit(5).skip(0, function(err, patterns) {
     res.json(patterns);
   });
 });
