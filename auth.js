@@ -4,7 +4,7 @@ var request = require('request');
 var jwt = require('jwt-simple');
 var mongoose = require('mongoose');
 
-var User = mongoose.model('Pattern', mongoose.Schema({
+var User = mongoose.model('User', mongoose.Schema({
   google: String,
   displayName: String
 }));
