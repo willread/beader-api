@@ -54,7 +54,7 @@ router.get('/:id', function(req, res) {
 
         pattern.save(function(err) {
           if(err){
-            req.status(500).json({error: err.message});
+            res.status(500).json({error: err.message});
           }else{
             res.json(pattern);
           }
