@@ -8,13 +8,14 @@ var authUtils = require('./authUtils');
 var generateImage = require('./generateImage');
 
 var PatternSchema = mongoose.Schema({
+  _id: Number,
   name: String,
   description: String,
   width: Number,
   height: Number,
   imageUrl: String,
   pattern: Array,
-  user: mongoose.Schema.Types.Mixed
+  user: {type: Number, ref: 'User'}
 });
 PatternSchema.plugin(mongoosePaginate);
 var Pattern = mongoose.model('Pattern', PatternSchema);
@@ -66,6 +67,26 @@ router.get('/:id', function(req, res) {
   });
 });
 
+// TODO: Remove this unauthenticated endpoint
+
+router.post('/import', function(req, res) {
+  var pattern = new Pattern(req.body);
+
+  // TODO: Validation
+
+  generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
+    pattern.imageUrl = url;
+
+    pattern.save(function(err) {
+      if(err){
+        req.status(500).json({error: err.message});
+      }else{
+        res.json({});
+      }
+    })
+  });
+});
+
 // Routes after this are authenticated
 
 router.use(authUtils.ensureAuthenticated);
@@ -83,7 +104,7 @@ router.use(authUtils.ensureAuthenticated);
 
 router.post('/', function(req, res) {
   var pattern = new Pattern(req.body);
-  pattern.user = req.user;
+  pattern.user = req.user._id;
 
   // TODO: Validation
 
