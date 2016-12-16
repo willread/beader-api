@@ -49,7 +49,7 @@ router.get('/:id', function(req, res) {
       return res.status(404).json({message: 'Pattern not found.', error: err.message});
     }
     if(!pattern.imageUrl){
-      generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
+      generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
         pattern.imageUrl = url;
 
         pattern.save(function(err) {
