@@ -1,11 +1,11 @@
 var express = require('express');
 var paginate = require('express-paginate');
-var cloudinary = require('cloudinary');
 var ObjectId = require('mongodb').ObjectID;
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
 var authUtils = require('./authUtils');
+var generateImage = require('./generateImage');
 
 var PatternSchema = mongoose.Schema({
   name: String,
@@ -22,14 +22,6 @@ var Pattern = mongoose.model('Pattern', PatternSchema);
 // Configure router
 
 var router = express.Router();
-
-// Configure image upload SDK
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
 
 // Get a list of patterns
 
@@ -72,6 +64,7 @@ router.use(authUtils.ensureAuthenticated);
 //   width: 10,
 //   height: 10,
 //   pattern: ['#ffffff', ...],
+//   align: 'horizontal',
 //   image: 'data:image/png;base64,...'
 // }
 
@@ -81,8 +74,8 @@ router.post('/', function(req, res) {
 
   // TODO: Validation
 
-  cloudinary.uploader.upload(req.body.image, function(result) {
-    pattern.imageUrl = result.secure_url;
+  generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
+    pattern.imageUrl = url;
 
     pattern.save(function(err) {
       if(err){
@@ -91,7 +84,7 @@ router.post('/', function(req, res) {
         res.json({});
       }
     })
-  }, {});
+  });
 });
 
 module.exports = router;

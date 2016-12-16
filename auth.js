@@ -6,7 +6,8 @@ var mongoose = require('mongoose');
 
 var User = mongoose.model('User', mongoose.Schema({
   google: String,
-  displayName: String
+  displayName: String,
+  email: String
 }));
 
 // Configure router
@@ -30,23 +31,17 @@ router.post('/', function(req, res) {
     var accessToken = token.access_token;
     var headers = { Authorization: 'Bearer ' + accessToken };
 
-    // Step 2. Retrieve profile information about the current user.
     request.get({ url: peopleApiUrl, headers: headers, json: true }, function(err, response, profile) {
-
-      // Step 3b. Create a new user account or return an existing one.
       User.findOne({ google: profile.sub }, function(err, existingUser) {
         if (existingUser) {
-          console.log("token sent");
           return res.send({ token: authUtils.createJWT(existingUser) });
         }
-        console.log("profile: ", JSON.stringify(profile));
         var user = new User({
           google: profile.sub,
           displayName: profile.name
         });
         user.save(function(err) {
           var token = authUtils.createJWT(user);
-          console.log("token sent");
           res.send({ token: token });
         });
       });

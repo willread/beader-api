@@ -18,6 +18,7 @@
   "homepage": "https://github.com/collectivecognition/beader-api#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "canvas": "^1.6.2",
     "cloudinary": "^1.4.6",
     "express": "^4.14.0",
     "express-paginate": "^0.2.2",
