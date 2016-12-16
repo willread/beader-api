@@ -24,6 +24,33 @@ var Pattern = mongoose.model('Pattern', PatternSchema);
 
 var router = express.Router();
 
+// Refresh pattern images
+// FIXME: Disable this
+
+// GET /patterns-refresh
+
+router.get('/patterns-refresh', function(req, res) {
+    Patterm.find({}).toArray(function(err, patterns) {
+      var count = patterns.length;
+      var fn = function () {
+        var pattern = patterns[count];
+        generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
+          pattern.imageUrl = url;
+
+          pattern.save(function(err) {
+            if(err){
+              process.exit(1);
+            }else{
+              count -= 1;
+              if (count) fn();
+            }
+          })
+        }
+      }
+      fn();
+    });
+});
+
 // Get a list of patterns
 
 // GET /patterns
@@ -52,21 +79,7 @@ router.get('/:id', function(req, res) {
       if(err){
         return res.status(404).json({message: 'Pattern not found.', error: err.message});
       }
-      if(!pattern.imageUrl){
-        generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
-          pattern.imageUrl = url;
-
-          pattern.save(function(err) {
-            if(err){
-              res.status(500).json({error: err.message});
-            }else{
-              res.json(pattern);
-            }
-          })
-        });
-      }else{
-        res.json(pattern);
-      }
+      res.json(pattern);
     });
 });
 
