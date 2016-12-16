@@ -48,7 +48,21 @@ router.get('/:id', function(req, res) {
     if(err){
       return res.status(404).json({message: 'Pattern not found.'});
     }
-    res.json(pattern);
+    if(!pattern.imageUrl){
+      generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
+        pattern.imageUrl = url;
+
+        pattern.save(function(err) {
+          if(err){
+            req.status(500).json({error: err.message});
+          }else{
+            res.json(pattern);
+          }
+        })
+      });
+    }else{
+      res.json(pattern);
+    }
   });
 });
 
@@ -65,7 +79,6 @@ router.use(authUtils.ensureAuthenticated);
 //   height: 10,
 //   pattern: ['#ffffff', ...],
 //   align: 'horizontal',
-//   image: 'data:image/png;base64,...'
 // }
 
 router.post('/', function(req, res) {
