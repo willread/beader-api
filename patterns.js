@@ -31,7 +31,7 @@ var router = express.Router();
 
 router.get('/patterns-refresh', function(req, res) {
     Patterm.find({}).toArray(function(err, patterns) {
-      var count = patterns.length;
+      var count = 10; //patterns.length;
       var fn = function () {
         var pattern = patterns[count];
         generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
