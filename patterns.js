@@ -45,7 +45,7 @@ router.get('/', function(req, res) {
 // GET /pattern/:id
 
 router.get('/:id', function(req, res) {
-  Pattern.findOne({_id: ObjectId(req.params.id)}, function(err, pattern) {
+  Pattern.findOne({_id: req.params.id}, function(err, pattern) {
     console.log("Err", err, "Pattern", pattern);
     if(err){
       return res.status(404).json({message: 'Pattern not found.', error: err.message});
