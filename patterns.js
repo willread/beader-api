@@ -45,27 +45,29 @@ router.get('/', function(req, res) {
 // GET /pattern/:id
 
 router.get('/:id', function(req, res) {
-  Pattern.findOne({_id: req.params.id}, function(err, pattern) {
-    console.log("Err", err, "Pattern", pattern);
-    if(err){
-      return res.status(404).json({message: 'Pattern not found.', error: err.message});
-    }
-    if(!pattern.imageUrl){
-      generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
-        pattern.imageUrl = url;
+  Pattern.findOne({_id: req.params.id})
+    .populate('user')
+    .exec(function(err, pattern) {
+      console.log("Err", err, "Pattern", pattern);
+      if(err){
+        return res.status(404).json({message: 'Pattern not found.', error: err.message});
+      }
+      if(!pattern.imageUrl){
+        generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
+          pattern.imageUrl = url;
 
-        pattern.save(function(err) {
-          if(err){
-            res.status(500).json({error: err.message});
-          }else{
-            res.json(pattern);
-          }
-        })
-      });
-    }else{
-      res.json(pattern);
-    }
-  });
+          pattern.save(function(err) {
+            if(err){
+              res.status(500).json({error: err.message});
+            }else{
+              res.json(pattern);
+            }
+          })
+        });
+      }else{
+        res.json(pattern);
+      }
+    });
 });
 
 // Routes after this are authenticated
