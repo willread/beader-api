@@ -1,7 +1,7 @@
 var express = require('express');
 var paginate = require('express-paginate');
 var ObjectId = require('mongodb').ObjectID;
-var mongoose = require('mongoose');
+var mongoose = require('mongoose').set('debug', true);
 var mongoosePaginate = require('mongoose-paginate');
 
 var authUtils = require('./authUtils');
