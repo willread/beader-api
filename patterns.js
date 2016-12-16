@@ -45,7 +45,7 @@ router.get('/patterns-refresh', function(req, res) {
             if (count) fn();
           }
         });
-      }
+      });
     }
     fn();
   });
