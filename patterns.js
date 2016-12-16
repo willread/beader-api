@@ -14,7 +14,7 @@ var PatternSchema = mongoose.Schema({
   height: Number,
   imageUrl: String,
   pattern: Array,
-  user: {ref: 'User'}
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 PatternSchema.plugin(mongoosePaginate);
 var Pattern = mongoose.model('Pattern', PatternSchema);
