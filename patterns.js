@@ -30,25 +30,25 @@ var router = express.Router();
 // GET /patterns-refresh
 
 router.get('/patterns-refresh', function(req, res) {
-    Patterm.find({}).toArray(function(err, patterns) {
-      var count = 10; //patterns.length;
-      var fn = function () {
-        var pattern = patterns[count];
-        generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
-          pattern.imageUrl = url;
+  Pattern.find({}).toArray(function(err, patterns) {
+    var count = 10; //patterns.length;
+    var fn = function () {
+      var pattern = patterns[count];
+      generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
+        pattern.imageUrl = url;
 
-          pattern.save(function(err) {
-            if(err){
-              process.exit(1);
-            }else{
-              count -= 1;
-              if (count) fn();
-            }
-          })
-        }
+        pattern.save(function(err) {
+          if(err){
+            process.exit(1);
+          }else{
+            count -= 1;
+            if (count) fn();
+          }
+        });
       }
-      fn();
-    });
+    }
+    fn();
+  });
 });
 
 // Get a list of patterns
