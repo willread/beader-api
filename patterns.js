@@ -45,7 +45,7 @@ router.get('/', function(req, res) {
 
 router.get('/:id', function(req, res) {
   Pattern.findOne({_id: ObjectId(req.params.id)}, function(err, pattern) {
-    if(err || !pattern){
+    if(err){
       return res.status(404).json({message: 'Pattern not found.', error: err.message});
     }
     if(!pattern.imageUrl){
