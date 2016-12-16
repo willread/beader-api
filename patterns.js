@@ -8,7 +8,6 @@ var authUtils = require('./authUtils');
 var generateImage = require('./generateImage');
 
 var PatternSchema = mongoose.Schema({
-  _id: Number,
   name: String,
   description: String,
   width: Number,
