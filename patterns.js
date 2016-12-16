@@ -67,26 +67,6 @@ router.get('/:id', function(req, res) {
   });
 });
 
-// TODO: Remove this unauthenticated endpoint
-
-router.post('/import', function(req, res) {
-  var pattern = new Pattern(req.body);
-
-  // TODO: Validation
-
-  generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
-    pattern.imageUrl = url;
-
-    pattern.save(function(err) {
-      if(err){
-        req.status(500).json({error: err.message});
-      }else{
-        res.json({});
-      }
-    })
-  });
-});
-
 // Routes after this are authenticated
 
 router.use(authUtils.ensureAuthenticated);
