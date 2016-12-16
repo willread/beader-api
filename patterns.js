@@ -30,7 +30,7 @@ var router = express.Router();
 // GET /patterns-refresh
 
 router.get('/patterns-refresh', function(req, res) {
-  Pattern.find({}).toArray(function(err, patterns) {
+  Pattern.find({}, function(err, patterns) {
     var count = 10; //patterns.length;
     var fn = function () {
       var pattern = patterns[count];
