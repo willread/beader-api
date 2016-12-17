@@ -24,47 +24,6 @@ var Pattern = mongoose.model('Pattern', PatternSchema);
 
 var router = express.Router();
 
-// Refresh pattern images
-// FIXME: Disable this
-
-// GET /patterns-refresh
-
-router.get('/patterns-refresh', function(req, res) {
-  Pattern.find({}, function(err, patterns) {
-    // var targetID = '585467b414d0960771a744ca';
-    //585467b414d0960771a744b6
-    // var foundTarget = false;
-    var count = 156; //patterns.length - 1;
-    // console.log(count, "patterns found");
-    // for(var ii = count; ii > 0; ii--){
-    //   console.log(ii, patterns[ii]._id);
-    //   if(patterns[ii] && patterns[ii]._id && patterns[ii]._id.$oid == targetID){
-    //     console.log("FOUND", ii);
-    //     break;
-    //   }
-    // }
-    // return;
-    var fn = function () {
-      var pattern = patterns[count];
-
-      generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
-        pattern.imageUrl = url;
-
-        pattern.save(function(err) {
-          if(err){
-            console.log(err);
-            process.exit(1);
-          }else{
-            count -= 1;
-            if (count) fn();
-          }
-        });
-      });
-    }
-    fn();
-  });
-});
-
 // Get a list of patterns
 
 // GET /patterns
@@ -135,7 +94,7 @@ router.post('/', function(req, res) {
 
     pattern.save(function(err) {
       if(err){
-        req.status(500).json({error: err.message});
+        res.status(500).json({error: err.message});
       }else{
         res.json({});
       }
