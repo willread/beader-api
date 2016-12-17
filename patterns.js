@@ -34,7 +34,7 @@ router.get('/patterns-refresh', function(req, res) {
     // var targetID = '585467b414d0960771a744ca';
     //585467b414d0960771a744b6
     // var foundTarget = false;
-    var count = 152; //patterns.length - 1;
+    var count = 156; //patterns.length - 1;
     // console.log(count, "patterns found");
     // for(var ii = count; ii > 0; ii--){
     //   console.log(ii, patterns[ii]._id);
