@@ -34,41 +34,43 @@ router.get('/patterns-refresh', function(req, res) {
     var targetID = '585467b414d0960771a744ca';
     var foundTarget = false;
     var count = patterns.length - 1;
+    console.log(count, "patterns found");
     for(var ii = count; ii; ii++){
+      console.log(patterns[ii]);
       if(patterns[ii] && patterns[ii]._id && patterns[ii]._id.$oid == targetID){
         console.log("FOUND", ii);
         break;
       }
     }
     return;
+    // //
+    // var fn = function () {
+    //   var pattern = patterns[count];
     //
-    var fn = function () {
-      var pattern = patterns[count];
-
-      if(pattern._id.$oid == targetID){
-        foundTarget = true;
-      }
-
-      if(!foundTarget){
-        count -= 1;
-        if (count) fn();
-        return;
-      }
-
-      generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
-        pattern.imageUrl = url;
-
-        pattern.save(function(err) {
-          if(err){
-            process.exit(1);
-          }else{
-            count -= 1;
-            if (count) fn();
-          }
-        });
-      });
-    }
-    fn();
+    //   if(pattern._id.$oid == targetID){
+    //     foundTarget = true;
+    //   }
+    //
+    //   if(!foundTarget){
+    //     count -= 1;
+    //     if (count) fn();
+    //     return;
+    //   }
+    //
+    //   generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
+    //     pattern.imageUrl = url;
+    //
+    //     pattern.save(function(err) {
+    //       if(err){
+    //         process.exit(1);
+    //       }else{
+    //         count -= 1;
+    //         if (count) fn();
+    //       }
+    //     });
+    //   });
+    // }
+    // fn();
   });
 });
 
