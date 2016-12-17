@@ -113,6 +113,18 @@ router.use(authUtils.ensureAuthenticated);
 // }
 
 router.post('/', function(req, res) {
+  req.sanitize('name').escape();
+  req.sanitize('description').escape();
+
+  req.body.width = parseInt(req.body.width);
+  req.body.height = parseInt(req.body.height);
+
+  req.body.pattern = req.body.pattern.map(function(cell) {
+    return cell.replace(/[^A-Za-z0-9]/g, '');
+  });
+
+  req.body.align = req.body.align.replace(/[^a-z], ''/g, '');
+
   var pattern = new Pattern(req.body);
   pattern.user = req.user._id;
 

@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var mongoSanitize = require('mongo-sanitize');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -10,12 +11,23 @@ var app = express();
 
 app.use(bodyParser.json({limit: '5mb'}));
 
+// Allow validating input
+
+app.use(expressValidator());
+
 // Allow cross-origin
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:9000'); // FIXME
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+// Protect against mongo query attacks
+
+app.use(function(req, res, next) {
+  req.body = mongoSanitize(req.body);
   next();
 });
 
