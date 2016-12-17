@@ -52,6 +52,7 @@ router.get('/patterns-refresh', function(req, res) {
 
         pattern.save(function(err) {
           if(err){
+            console.log(err);
             process.exit(1);
           }else{
             count -= 1;
