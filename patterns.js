@@ -38,10 +38,10 @@ router.get('/patterns-refresh', function(req, res) {
       var pattern = patterns[count];
 
       if(pattern._id.$oid == targetID){
-        found = true;
+        foundTarget = true;
       }
 
-      if(!found){
+      if(!foundTarget){
         count -= 1;
         if (count) fn();
       }
