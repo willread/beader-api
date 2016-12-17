@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
 var mongoSanitize = require('mongo-sanitize');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
