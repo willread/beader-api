@@ -34,6 +34,14 @@ router.get('/patterns-refresh', function(req, res) {
     var targetID = '585467b414d0960771a744ca';
     var foundTarget = false;
     var count = patterns.length - 1;
+    for(var ii = count; ii; ii++){
+      if(patterns[ii]._id.$oid == targetId){
+        console.log("FOUND", ii);
+        break;
+      }
+    }
+    return;
+    //
     var fn = function () {
       var pattern = patterns[count];
 
