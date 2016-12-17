@@ -44,6 +44,7 @@ router.get('/patterns-refresh', function(req, res) {
       if(!foundTarget){
         count -= 1;
         if (count) fn();
+        return;
       }
 
       generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
