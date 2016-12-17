@@ -31,9 +31,21 @@ var router = express.Router();
 
 router.get('/patterns-refresh', function(req, res) {
   Pattern.find({}, function(err, patterns) {
+    var targetID = '585467b414d0960771a744ca';
+    var foundTarget = false;
     var count = patterns.length - 1;
     var fn = function () {
       var pattern = patterns[count];
+
+      if(pattern._id.$oid == targetID){
+        found = true;
+      }
+
+      if(!found){
+        count -= 1;
+        if (count) fn();
+      }
+
       generateImage(pattern.width, pattern.height, pattern.align, pattern.pattern, function(url) {
         pattern.imageUrl = url;
 
