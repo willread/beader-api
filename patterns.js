@@ -36,7 +36,7 @@ router.get('/patterns-refresh', function(req, res) {
     var count = patterns.length - 1;
     console.log(count, "patterns found");
     for(var ii = count; ii > 0; ii--){
-      console.log(ii, patterns[ii].name);
+      console.log(ii, patterns[ii]._id);
       if(patterns[ii] && patterns[ii]._id && patterns[ii]._id.$oid == targetID){
         console.log("FOUND", ii);
         break;
