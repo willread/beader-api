@@ -124,8 +124,7 @@ router.delete('/:id', function(req, res) {
         return res.status(404).json({message: 'Pattern not found.', error: err.message});
       }
 
-      if(pattern.user._id !== req.user._id){
-        console.log(pattern.user.id, req.user._id);
+      if(pattern.user.id !== req.user._id){
         return res.status(403).json({message: 'You are not alloed to delete this pattern'});
       }
 
