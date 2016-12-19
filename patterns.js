@@ -30,7 +30,7 @@ var router = express.Router();
 router.use(paginate.middleware(10, 50));
 
 router.get('/', function(req, res) {
-  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: {displayName, _id}}, sort: {_id: 'desc'}}, function(err, result) {
+  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName', sort: {_id: 'desc'}}, function(err, result) {
     res.json({
       patterns: result.docs,
       totalPages: result.pages,
@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
 router.use(paginate.middleware(10, 50));
 
 router.get('/user/:id', function(req, res) {
-  Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: {displayName, _id}}, sort: {_id: 'desc'}}, function(err, result){
+  Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result){
     res.json({
       patterns: result.docs,
       totalPages: result.pages,
@@ -59,7 +59,7 @@ router.get('/user/:id', function(req, res) {
 
 router.get('/:id', function(req, res) {
   Pattern.findOne({_id: req.params.id})
-    .populate('user', {displayName, _id})
+    .populate('user', '_id displayName')
     .exec(function(err, pattern) {
       console.log("Err", err, "Pattern", pattern);
       if(err){
