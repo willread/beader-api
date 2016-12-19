@@ -19,7 +19,7 @@ app.use(expressValidator());
 // Allow cross-origin
 
 app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+  res.header('Access-Control-Allow-Origin', req.headers.origin); // Allow all origins
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
