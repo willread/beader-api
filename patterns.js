@@ -8,7 +8,6 @@ var authUtils = require('./authUtils');
 var generateImage = require('./generateImage');
 
 var PatternSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   name: String,
   description: String,
   width: Number,
@@ -100,8 +99,6 @@ router.post('/', function(req, res) {
 
   var pattern = new Pattern(req.body);
   pattern.user = req.user._id;
-
-  // TODO: Validation
 
   generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
     pattern.imageUrl = url;
