@@ -30,7 +30,7 @@ var router = express.Router();
 router.use(paginate.middleware(10, 50));
 
 router.get('/', function(req, res) {
-  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit, populate: 'user'}, function(err, result) {
+  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit, populate: 'user', sort: {_id: 'desc'}}, function(err, result) {
     res.json({
       patterns: result.docs,
       totalPages: result.pages,
