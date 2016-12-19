@@ -103,11 +103,11 @@ router.post('/', function(req, res) {
   generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
     pattern.imageUrl = url;
 
-    pattern.save(function(err) {
+    pattern.save(function(err, pattern) {
       if(err){
         res.status(500).json({error: err.message});
       }else{
-        res.json({});
+        res.json(pattern);
       }
     })
   });
