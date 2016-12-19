@@ -61,7 +61,6 @@ router.get('/:id', function(req, res) {
   Pattern.findOne({_id: req.params.id})
     .populate('user', '_id displayName')
     .exec(function(err, pattern) {
-      console.log("Err", err, "Pattern", pattern);
       if(err){
         return res.status(404).json({message: 'Pattern not found.', error: err.message});
       }
@@ -111,6 +110,26 @@ router.post('/', function(req, res) {
       }
     })
   });
+});
+
+// Delete a pattern
+
+// DELETE /patterns/:id
+
+router.delete('/:id', function(req, res) {
+  Pattern.findOne({_id: req.params.id})
+    .populate('user', '_id displayName')
+    .exec(function(err, pattern) {
+      if(err){
+        return res.status(404).json({message: 'Pattern not found.', error: err.message});
+      }
+
+      if(pattern.user._id !== req.user._id){
+        return res.status(403).json({message: 'You are not alloed to delete this pattern'});
+      }
+
+      res.json();
+    });
 });
 
 module.exports = router;
