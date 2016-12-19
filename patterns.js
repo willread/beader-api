@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
 router.use(paginate.middleware(10, 50));
 
 router.get('/user/:id', function(req, res) {
-  Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: 'user'}, function(err, result){
+  Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: 'user', sort: {_id: 'desc'}}, function(err, result){
     res.json({
       patterns: result.docs,
       totalPages: result.pages,
