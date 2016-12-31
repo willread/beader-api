@@ -47,6 +47,10 @@ db.once('open', function() {
   });
 });
 
+app.get('/', function(req, res) {
+  res.end('');
+});
+
 // Import modules
 
 app.use('/auth', require('./auth'));
