@@ -38,7 +38,7 @@ router.post('/', function(req, res) {
         }
         var user = new User({
           google: profile.sub,
-          displayName: profile.firstName
+          displayName: profile.givenName
         });
         user.save(function(err) {
           var token = authUtils.createJWT(user);
