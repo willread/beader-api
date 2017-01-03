@@ -51,6 +51,10 @@ app.get('/', function(req, res) {
   res.end('');
 });
 
+app.get('/wakemydyno.txt', function(req, res) {
+  res.end('');
+});
+
 // Import modules
 
 app.use('/auth', require('./auth'));
