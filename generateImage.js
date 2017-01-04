@@ -21,7 +21,7 @@ module.exports = function(width, height, align, data, cb) {
 
   var size = width > height ? canvasWidth /width : canvasHeight /height;
 
-  if (align !== 'normal') {
+  if (align !== 'normal' && align !== 'pixel') {
     size = width > height ? size - size / width / 2 : size - size / height / 2;
   }
 
@@ -31,7 +31,11 @@ module.exports = function(width, height, align, data, cb) {
   for (var x = 0; x < width; x++) {
     for (var y = 0; y < height; y++) {
       context.beginPath();
-      context.arc(x * size + size / 2 + (y % 2 ? horizontalOffset : 0), y * size + size / 2 + (x % 2 ? verticalOffset : 0), size / 2 - 1, 0, 2 * Math.PI, false);
+      if(align == 'pixel'){
+        context.rect(x * size + centeringOffset, y * size, size, size);
+      }else{
+        context.arc(x * size + size / 2 + (y % 2 ? horizontalOffset : 0), y * size + size / 2 + (x % 2 ? verticalOffset : 0), size / 2 - 1, 0, 2 * Math.PI, false);
+      }
       context.fillStyle = '#' + (data[x + y * width] || clearColor);
       context.fill();
       context.lineWidth = 1;
