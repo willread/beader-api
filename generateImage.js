@@ -32,7 +32,7 @@ module.exports = function(width, height, align, data, cb) {
     for (var y = 0; y < height; y++) {
       context.beginPath();
       if(align == 'pixel'){
-        context.rect(x * size + centeringOffset, y * size, size, size);
+        context.rect(x * size, y * size, size, size);
       }else{
         context.arc(x * size + size / 2 + (y % 2 ? horizontalOffset : 0), y * size + size / 2 + (x % 2 ? verticalOffset : 0), size / 2 - 1, 0, 2 * Math.PI, false);
       }
