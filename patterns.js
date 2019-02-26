@@ -14,8 +14,11 @@ var PatternSchema = mongoose.Schema({
   height: Number,
   imageUrl: String,
   pattern: Array,
+  createdDate: {type: Date, default: Date.now},
+  updatedDate: {type: Date, default: Date.now},
   user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
+PatternSchema.index({name: 'text', description: 'text'})
 PatternSchema.plugin(mongoosePaginate);
 var Pattern = mongoose.model('Pattern', PatternSchema);
 
@@ -30,7 +33,7 @@ var router = express.Router();
 router.use(paginate.middleware(10, 50));
 
 router.get('/', function(req, res) {
-  Pattern.paginate({}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result) {
+  Pattern.paginate({$text: {$search: req.query.search}}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result) {
     if(err) {
       return res.status(404).json({message: 'Patterns error.', error: err.message});
     }
