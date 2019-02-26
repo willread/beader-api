@@ -31,6 +31,10 @@ router.use(paginate.middleware(10, 50));
 
 router.get('/', function(req, res) {
   Pattern.paginate({}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result) {
+    if(err) {
+      return res.status(404).json({message: 'Patterns error.', error: err.message});
+    }
+
     res.json({
       patterns: result.docs,
       totalPages: result.pages,
@@ -45,6 +49,10 @@ router.use(paginate.middleware(10, 50));
 
 router.get('/user/:id', function(req, res) {
   Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result){
+    if(err) {
+      return res.status(404).json({message: 'User patterns error.', error: err.message});
+    }
+
     res.json({
       patterns: result.docs,
       totalPages: result.pages,
