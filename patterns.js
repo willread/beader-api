@@ -34,8 +34,8 @@ router.use(paginate.middleware(10, 50));
 
 router.get('/', function(req, res) {
   const query = {};
-  if (req.params.search) {
-    query.$text ={$search: req.query.search};
+  if (req.query.search) {
+    query.$text = {$search: req.query.search};
   }
   Pattern.paginate(query, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result) {
     if(err) {
