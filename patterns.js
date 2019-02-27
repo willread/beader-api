@@ -10,6 +10,11 @@ var generateImage = require('./generateImage');
 var PatternSchema = mongoose.Schema({
   name: String,
   description: String,
+  align: {
+    type: String,
+    enum: ['normal',' pixel', 'horizontal', 'vertical'],
+    default: 'normal',
+  },
   width: Number,
   height: Number,
   imageUrl: String,
