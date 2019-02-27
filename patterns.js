@@ -184,11 +184,11 @@ router.put('/:id', function(req, res) {
       generateImage(updatedPattern.width, updatedPattern.height, updatedPattern.align, updatedPattern.pattern, function(url) {
         updatedPattern.imageUrl = url;
 
-        Pattern.update(updatedPattern, function(err) {
+        Pattern.update(updatedPattern, function(err, finalPattern) {
           if(err){
             res.status(500).json({error: err.message});
           }else{
-            res.json();
+            res.json(finalPattern);
           }
         });
       });
