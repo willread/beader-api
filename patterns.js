@@ -171,17 +171,20 @@ router.put('/:id', function(req, res) {
       req.sanitize('name').escape();
       req.sanitize('description').escape();
 
-      req.body.width = parseInt(req.body.width);
-      req.body.height = parseInt(req.body.height);
+      const updatedPattern = {...req.body};
+      delete updatedPattern._id;
 
-      req.body.pattern = req.body.pattern.map(function(cell) {
+      updatedPattern.width = parseInt(updatedPattern.width);
+      updatedPattern.height = parseInt(updatedPattern.height);
+
+      updatedPattern.pattern = updatedPattern.pattern.map(function(cell) {
         return cell.replace(/[^A-Za-z0-9]/g, '');
       });
 
-      generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
-        pattern.imageUrl = url;
+      generateImage(updatedPattern.width, updatedPattern.height, updatedPattern.align, updatedPattern.pattern, function(url) {
+        updatedPattern.imageUrl = url;
 
-        Pattern.update(req.body, function(err) {
+        Pattern.update(updatedPattern, function(err) {
           if(err){
             res.status(500).json({error: err.message});
           }else{
