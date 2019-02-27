@@ -114,8 +114,6 @@ router.post('/', function(req, res) {
     return cell.replace(/[^A-Za-z0-9]/g, '');
   });
 
-  req.body.align = req.body.align.replace(/[^a-z], ''/g, '');
-
   var pattern = new Pattern(req.body);
   pattern.user = req.user._id;
 
@@ -145,11 +143,51 @@ router.delete('/:id', function(req, res) {
       }
 
       if(pattern.user.id !== req.user._id){
-        return res.status(403).json({message: 'You are not alloed to delete this pattern'});
+        return res.status(403).json({message: 'You are not allowed to delete this pattern'});
       }
 
       Pattern.remove(pattern, function(err) {
         res.json();
+      });
+    });
+});
+
+// Update apattern
+
+// PUT /patterns/:id
+
+router.put('/:id', function(req, res) {
+  Pattern.findOne({_id: req.params.id})
+    .populate('user', '_id displayName')
+    .exec(function(err, pattern) {
+      if(err){
+        return res.status(404).json({message: 'Pattern not found.', error: err.message});
+      }
+
+      if(pattern.user.id !== req.user._id){
+        return res.status(403).json({message: 'You are not allowed to update this pattern'});
+      }
+
+      req.sanitize('name').escape();
+      req.sanitize('description').escape();
+
+      req.body.width = parseInt(req.body.width);
+      req.body.height = parseInt(req.body.height);
+
+      req.body.pattern = req.body.pattern.map(function(cell) {
+        return cell.replace(/[^A-Za-z0-9]/g, '');
+      });
+
+      generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
+        pattern.imageUrl = url;
+
+        Pattern.update(req.body, function(err) {
+          if(err){
+            res.status(500).json({error: err.message});
+          }else{
+            res.json();
+          }
+        });
       });
     });
 });
