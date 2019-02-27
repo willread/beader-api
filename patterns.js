@@ -12,7 +12,7 @@ var PatternSchema = mongoose.Schema({
   description: String,
   align: {
     type: String,
-    enum: ['normal',' pixel', 'horizontal', 'vertical'],
+    enum: ['normal', 'pixel', 'horizontal', 'vertical'],
     default: 'normal',
   },
   width: Number,
