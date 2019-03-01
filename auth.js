@@ -32,6 +32,7 @@ router.post('/', function(req, res) {
     var headers = { Authorization: 'Bearer ' + accessToken };
 
     request.get({ url: peopleApiUrl, headers: headers, json: true }, function(err, response, profile) {
+      console.log(peopleApiUrl, response, profile);
       User.findOne({ google: profile.sub }, function(err, existingUser) {
         if (existingUser) {
           return res.send({ token: authUtils.createJWT(existingUser) });
