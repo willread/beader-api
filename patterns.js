@@ -19,7 +19,7 @@ var PatternSchema = mongoose.Schema({
   height: Number,
   imageUrl: String,
   pattern: Array,
-  createdDate: {type: Date, default: Date.now},
+  createdDate: {type: Date, default: new Date(2019, 1, 1)},
   updatedDate: {type: Date, default: Date.now},
   user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
@@ -116,6 +116,7 @@ router.post('/', function(req, res) {
 
   var pattern = new Pattern(req.body);
   pattern.user = req.user._id;
+  pattern.createdDate = Date.now;
 
   generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
     pattern.imageUrl = url;
