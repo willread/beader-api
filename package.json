@@ -1,10 +1,13 @@
 {
   "name": "beader-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
-  "main": "api.js",
+  "main": "src/api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/api",
+    "start:dev": "nodemon",
+    "dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "bash:dev": "docker exec -it beader-api_beader-api_1 /bin/bash"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,7 @@
   "homepage": "https://github.com/collectivecognition/beader-api#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
-    "canvas": "^1.6.2",
+    "canvas": "^2.6.1",
     "cloudinary": "^1.4.6",
     "express": "^4.14.0",
     "express-paginate": "^0.2.2",
@@ -31,6 +34,9 @@
     "mongodb": "^2.2.16",
     "mongoose": "^4.7.2",
     "mongoose-paginate": "^5.0.3",
-    "request": "^2.79.0"
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

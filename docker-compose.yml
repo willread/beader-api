@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  beader-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3003
+    env_file:
+      - ./env/beader-api.env
+    restart: always
+    expose:
+      - "3003"
+    links:
+      - beader-mongo
+    networks:
+      - default
+      - beader
+  beader-mongo:
+    image: mongo
+    env_file:
+      - ./env/beader-mongo.env
+    # volumes:
+    #   - ./data/beader-mongo:/data/db
+    restart: always
+    expose:
+      - "27017"
+    networks:
+      - beader
+networks:
+  beader:
+    driver: bridge
+    internal: true

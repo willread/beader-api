@@ -38,6 +38,10 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-# pm2 env
-
+# environment variable files
+env/*
+!env/.gitkeep
+!env/*.sample.env
 env.json
+
+.DS_Store

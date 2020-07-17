@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  beader-api:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./src:/usr/src/beader-api/src
+    ports:
+      - "3003:3003"

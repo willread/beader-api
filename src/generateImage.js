@@ -1,4 +1,5 @@
-var cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary');
+const { createCanvas } = require('canvas');
 
 // Configure image upload SDK
 
@@ -8,28 +9,26 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-var Canvas = require('canvas');
+const clearColor = 'ffffff';
+const strokeColor = 'dddddd';
+const canvasWidth = 700;
+const canvasHeight = 700;
 
-var clearColor = 'ffffff';
-var strokeColor = 'dddddd';
-var canvasWidth = 700;
-var canvasHeight = 700;
+module.exports = (width, height, align, data, cb) => {
+  const canvas = createCanvas(canvasWidth, canvasHeight);
+  const context = canvas.getContext('2d');
 
-module.exports = function(width, height, align, data, cb) {
-  var canvas = new Canvas(canvasWidth, canvasHeight);
-  var context = canvas.getContext('2d');
-
-  var size = width > height ? canvasWidth /width : canvasHeight /height;
+  const size = width > height ? canvasWidth /width : canvasHeight /height;
 
   if (align !== 'normal' && align !== 'pixel') {
     size = width > height ? size - size / width / 2 : size - size / height / 2;
   }
 
-  var horizontalOffset = align == 'horizontal' ? size / 2 : 0;
-  var verticalOffset = align == 'vertical' ? size / 2 : 0;
+  const horizontalOffset = align == 'horizontal' ? size / 2 : 0;
+  const verticalOffset = align == 'vertical' ? size / 2 : 0;
 
-  for (var x = 0; x < width; x++) {
-    for (var y = 0; y < height; y++) {
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
       context.beginPath();
       if(align == 'pixel'){
         context.rect(x * size, y * size, size, size);
@@ -44,7 +43,7 @@ module.exports = function(width, height, align, data, cb) {
     }
   }
 
-  cloudinary.uploader.upload(canvas.toDataURL('image/png'), function(result) {
+  cloudinary.uploader.upload(canvas.toDataURL('image/png'), result => {
     cb(result.secure_url);
   }, {});
 }

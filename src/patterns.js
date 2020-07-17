@@ -1,13 +1,13 @@
-var express = require('express');
-var paginate = require('express-paginate');
-var ObjectId = require('mongodb').ObjectID;
-var mongoose = require('mongoose').set('debug', true);
-var mongoosePaginate = require('mongoose-paginate');
+const express = require('express');
+const paginate = require('express-paginate');
+const ObjectId = require('mongodb').ObjectID;
+const mongoose = require('mongoose').set('debug', true);
+const mongoosePaginate = require('mongoose-paginate');
 
-var authUtils = require('./authUtils');
-var generateImage = require('./generateImage');
+const authUtils = require('./authUtils');
+const generateImage = require('./generateImage');
 
-var PatternSchema = mongoose.Schema({
+const PatternSchema = mongoose.Schema({
   name: String,
   description: String,
   align: {
@@ -25,11 +25,12 @@ var PatternSchema = mongoose.Schema({
 });
 PatternSchema.index({name: 'text', description: 'text'})
 PatternSchema.plugin(mongoosePaginate);
-var Pattern = mongoose.model('Pattern', PatternSchema);
+
+const Pattern = mongoose.model('Pattern', PatternSchema);
 
 // Configure router
 
-var router = express.Router();
+const router = express.Router();
 
 // Get a list of patterns
 
@@ -37,12 +38,12 @@ var router = express.Router();
 
 router.use(paginate.middleware(10, 50));
 
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   const query = {};
   if (req.query.search) {
     query.$text = {$search: req.query.search};
   }
-  Pattern.paginate(query, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result) {
+  Pattern.paginate(query, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, (err, result) => {
     if(err) {
       return res.status(404).json({message: 'Patterns error.', error: err.message});
     }
@@ -59,8 +60,8 @@ router.get('/', function(req, res) {
 
 router.use(paginate.middleware(10, 50));
 
-router.get('/user/:id', function(req, res) {
-  Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, function(err, result){
+router.get('/user/:id', (req, res) => {
+  Pattern.paginate({user: req.params.id}, {page: req.query.page, limit: req.query.limit, populate: {path: 'user', select: '_id displayName'}, sort: {_id: 'desc'}}, (err, result) => {
     if(err) {
       return res.status(404).json({message: 'User patterns error.', error: err.message});
     }
@@ -77,10 +78,10 @@ router.get('/user/:id', function(req, res) {
 
 // GET /pattern/:id
 
-router.get('/:id', function(req, res) {
+router.get('/:id', (req, res) => {
   Pattern.findOne({_id: req.params.id})
     .populate('user', '_id displayName')
-    .exec(function(err, pattern) {
+    .exec((err, pattern) => {
       if(err){
         return res.status(404).json({message: 'Pattern not found.', error: err.message});
       }
@@ -103,25 +104,25 @@ router.use(authUtils.ensureAuthenticated);
 //   align: 'horizontal',
 // }
 
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
   req.sanitize('name').escape();
   req.sanitize('description').escape();
 
   req.body.width = parseInt(req.body.width);
   req.body.height = parseInt(req.body.height);
 
-  req.body.pattern = req.body.pattern.map(function(cell) {
+  req.body.pattern = req.body.pattern.map(cell => {
     return cell.replace(/[^A-Za-z0-9]/g, '');
   });
 
-  var pattern = new Pattern(req.body);
+  const pattern = new Pattern(req.body);
   pattern.user = req.user._id;
-  pattern.createdDate = Date.now;
+  pattern.createdDate = Date.now();
 
-  generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, function(url) {
+  generateImage(req.body.width, req.body.height, req.body.align, req.body.pattern, url => {
     pattern.imageUrl = url;
 
-    pattern.save(function(err, pattern) {
+    pattern.save((err, pattern) => {
       if(err){
         res.status(500).json({error: err.message});
       }else{
@@ -135,10 +136,10 @@ router.post('/', function(req, res) {
 
 // DELETE /patterns/:id
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', (req, res) => {
   Pattern.findOne({_id: req.params.id})
     .populate('user', '_id displayName')
-    .exec(function(err, pattern) {
+    .exec((err, pattern) => {
       if(err){
         return res.status(404).json({message: 'Pattern not found.', error: err.message});
       }
@@ -147,7 +148,7 @@ router.delete('/:id', function(req, res) {
         return res.status(403).json({message: 'You are not allowed to delete this pattern'});
       }
 
-      Pattern.remove(pattern, function(err) {
+      Pattern.remove(pattern, err => {
         res.json();
       });
     });
@@ -157,10 +158,10 @@ router.delete('/:id', function(req, res) {
 
 // PUT /patterns/:id
 
-router.put('/:id', function(req, res) {
+router.put('/:id', (req, res) => {
   Pattern.findOne({_id: req.params.id})
     .populate('user', '_id displayName')
-    .exec(function(err, pattern) {
+    .exec((err, pattern) => {
       if(err){
         return res.status(404).json({message: 'Pattern not found.', error: err.message});
       }
@@ -178,11 +179,11 @@ router.put('/:id', function(req, res) {
       updatedPattern.width = parseInt(updatedPattern.width);
       updatedPattern.height = parseInt(updatedPattern.height);
 
-      updatedPattern.pattern = updatedPattern.pattern.map(function(cell) {
+      updatedPattern.pattern = updatedPattern.pattern.map(cell => {
         return cell.replace(/[^A-Za-z0-9]/g, '');
       });
 
-      generateImage(updatedPattern.width, updatedPattern.height, updatedPattern.align, updatedPattern.pattern, function(url) {
+      generateImage(updatedPattern.width, updatedPattern.height, updatedPattern.align, updatedPattern.pattern, url => {
         pattern.imageUrl = url;
         pattern.name = updatedPattern.name;
         pattern.description = updatedPattern.description;
@@ -191,7 +192,7 @@ router.put('/:id', function(req, res) {
         pattern.height = updatedPattern.height;
         pattern.pattern = updatedPattern.pattern;
 
-        pattern.save(function(err, finalPattern) {
+        pattern.save((err, finalPattern) => {
           if(err){
             res.status(500).json({error: err.message});
           }else{

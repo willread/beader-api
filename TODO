@@ -1,0 +1,3 @@
+- Replace deprecated request dependency
+- bson deprecation warning
+- env files being included in build (this is happening in gamera-api as well I assume)
