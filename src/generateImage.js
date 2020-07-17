@@ -15,10 +15,9 @@ const canvasWidth = 700;
 const canvasHeight = 700;
 
 module.exports = (width, height, align, data, cb) => {
-  const canvas = createCanvas(canvasWidth, canvasHeight);
+  const size = width > height ? canvasWidth / width : canvasHeight / height;
+  const canvas = createCanvas(width * size, height * size);
   const context = canvas.getContext('2d');
-
-  const size = width > height ? canvasWidth /width : canvasHeight /height;
 
   if (align !== 'normal' && align !== 'pixel') {
     size = width > height ? size - size / width / 2 : size - size / height / 2;
